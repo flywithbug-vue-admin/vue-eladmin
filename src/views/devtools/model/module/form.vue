@@ -8,11 +8,7 @@
 </template>
 
 <script>
-import initData from '@/mixins/initData'
-
 export default {
-  name: 'Form',
-  mixins: [initData],
   props: {
     isAdd: {
       type: Boolean,
@@ -36,7 +32,6 @@ export default {
   methods: {
     dialogClose() {
       this.dialog = false
-      this.sup_this.init()
     },
     handleClose(tag) {
     },

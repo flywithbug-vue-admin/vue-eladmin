@@ -1,18 +1,20 @@
 <template>
   <div class="head-container">
     <!-- 搜索 -->
+    关键字
     <el-input
       v-model="query.name"
-      :placeholder="$t('table.name')"
+      :placeholder="$t('query.model_query')"
       clearable
-      style="width: 200px;"
+      style="width: 180px;  margin-right: 5px"
       class="filter-item"
       @keyup.enter.native="toQuery"/>
+    APP
     <el-input
       v-model="query.owner"
-      :placeholder="$t('table.owner')"
+      :placeholder="$t('query.app_name')"
       clearable
-      style="width: 200px;"
+      style="width: 120px; margin-right: 5px"
       class="filter-item"
       @keyup.enter.native="toQuery"/>
     <el-button
@@ -69,33 +71,7 @@ export default {
       this.$parent.page = 0
       this.$parent.init()
     },
-    // 导出
-    download() {
-      this.downloadLoading = true
-        import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = ['ID', '用户名', '邮箱', '头像地址', '状态', '注册日期', '最后修改密码日期']
-          const filterVal = ['id', 'username', 'email', 'avatar', 'enabled', 'createTime', 'lastPasswordResetTime']
-          const data = this.formatJson(filterVal, this.$parent.data)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: 'table-list'
-          })
-          this.downloadLoading = false
-        })
-    },
-    // 数据转换
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'createTime' || j === 'lastPasswordResetTime') {
-          return parseTime(v[j])
-        } else if (j === 'enabled') {
-          return parseTime(v[j]) ? '启用' : '禁用'
-        } else {
-          return v[j]
-        }
-      }))
-    }
+
   }
 }
 </script>

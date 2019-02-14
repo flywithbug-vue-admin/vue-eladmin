@@ -40,7 +40,12 @@ export default {
     bundle_id: '请输入应用包名,格式: com.xxx.xx',
     desc: '请输入描述内容',
     sup_dir: '请选择上级目录',
-    permission: '请选择权限'
+    permission: '请选择权限',
+  },
+  query: {
+    model_query:"请输入Model关键字",
+    app_name:"应用名"
+
   },
   application: {
     table_app_icon: '应用图标',
