@@ -1,0 +1,29 @@
+@import '<%- path %>';
+
+.sass {
+<% _.forIn(colors, function(shades, color) { %>
+  &.<%- color.replace(' ', '-') %> {
+    background-color: palette(<%- color %>);
+    color: paletteText(<%- color %>);
+  }
+<% _.forIn(shades, function(hex, shade) { %>
+  &.<%- color.replace(' ', '-') %>-<%- shade.replace(' ', '-') %> {
+    background-color: palette(<%- color %>, <%- shade %>);
+    color: paletteText(<%- color %>, <%- shade %>);
+  }
+<% }) %>
+<% }) %>
+}
+
+.sass-text {
+<% _.forIn(colors, function(shades, color) { %>
+  &.<%- color.replace(' ', '-') %> {
+    color: palette(<%- color %>);
+  }
+<% _.forIn(shades, function(hex, shade) { %>
+  &.<%- color.replace(' ', '-') %>-<%- shade.replace(' ', '-') %> {
+    color: palette(<%- color %>, <%- shade %>);
+  }
+<% }) %>
+<% }) %>
+}
