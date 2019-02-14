@@ -17,8 +17,8 @@
           <svg-icon icon-class="ipvisits" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Day Ip</div>
-          <count-to :start-val="0" :end-val="count.dayIp" :duration="3000" class="card-panel-num"/>
+          <div class="card-panel-text">Day UV</div>
+          <count-to :start-val="0" :end-val="count.dayUV" :duration="3000" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -39,8 +39,8 @@
           <svg-icon icon-class="ipvisits" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Total Ip</div>
-          <count-to :start-val="0" :end-val="count.totalIp" :duration="3600" class="card-panel-num"/>
+          <div class="card-panel-text">Total UV</div>
+          <count-to :start-val="0" :end-val="count.totalUV" :duration="3600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -62,9 +62,9 @@ export default {
   mounted() {
     get().then(res => {
       const visit = res.visit
-      this.count.dayIp = visit.dayIp
+      this.count.dayUV = visit.dayUV
       this.count.dayVisits = visit.dayVisit
-      this.count.totalIp = visit.totalIp
+      this.count.totalUV = visit.totalUV
       this.count.totalVisits = visit.totalVisit
     })
   }
