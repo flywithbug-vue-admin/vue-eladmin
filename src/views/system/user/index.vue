@@ -70,8 +70,6 @@ export default {
     }
   },
   created() {
-    this.query.type = 'username'
-    this.query.enabled = '激活'
     this.getRoles()
     this.$nextTick(() => {
       this.init()
