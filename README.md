@@ -8,17 +8,8 @@
 前端使用Vue + element-ui
 后端使用 golang + mongodb
 
-
-- **go主要框架** 
-``` 
-  github.com/gin-gonic/gin
-  github.com/dgrijalva/jwt-go
-  github.com/flywithbug/log4go
-  gopkg.in/mgo.v2
-```
   
-  
-- **Vue主要框架**   
+- **主要框架**   
  ``` 
   vue-router
   vuex
@@ -28,15 +19,6 @@
  ```
 
 ``` bash
-# govendor add  dependencies
-cd web_server
-go run main.go
-
-# serve with hot reload at localhost:6201
-open  http://localhost:6201
-
-cd web_client
-
 # install dependencies
 npm install
 
@@ -90,76 +72,12 @@ npm run build --report
   - [ ] API管理
   
   
-### 用户权限设计 
-![user_permission](/frontend/user_permission.png)
-  
 ### 页面示例
 ![frontend](frontend/dashboard.png)   
 
 
 
-
-### Server项目布局
-
-```
-.
-├── common
-│   ├── com_definition.go
-│   ├── common.go
-│   ├── compare.go
-│   └── compare_test.go
-├── config
-│   └── config.go
-├── core
-│   ├── errors
-│   │   ├── errors.go
-│   │   ├── errors_test.go
-│   │   ├── reporter.go
-│   │   └── reporter_test.go
-│   ├── jwt
-│   │   └── jwt.go
-│   └── mongo
-│       ├── Increment.go
-│       ├── db.go
-│       └── db_test.go
-├── key_sources
-│   ├── private_key
-│   └── public_key.pub
-├── model
-│   ├── app_version.go
-│   ├── application.go
-│   ├── login.go
-│   ├── model_func.go
-│   ├── model_test.go
-│   ├── response.go
-│   ├── role.go
-│   ├── user.go
-│   └── user_role.go
-└── server
-    ├── handler
-    │   ├── app_handler.go
-    │   ├── app_version_handler.go
-    │   ├── file_handler.go
-    │   ├── html_handler.go
-    │   ├── index.go
-    │   ├── para_model.go
-    │   ├── router.go
-    │   └── user_handler.go
-    ├── middleware
-    │   ├── authentication.go
-    │   ├── cookie.go
-    │   └── logger.go
-    ├── server.go
-    └── web_server.go
-
-11 directories, 37 files
-
-``` 
-
-
-
-
-#### Client 项目结构
+####  项目结构
 
 ``` 
 .
