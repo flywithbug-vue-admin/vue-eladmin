@@ -24,15 +24,14 @@ import initData from '@/mixins/initData'
 import { parseTime } from '@/utils/index'
 import checkPermission from '@/utils/permission'
 
-
 export default {
   name: 'Index',
-  mixins: [initData],
   components: {
     fixedButton,
     eForm,
     eHeader
   },
+  mixins: [initData],
   methods: {
     parseTime,
     checkPermission,
