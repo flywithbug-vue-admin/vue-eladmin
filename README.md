@@ -4,9 +4,9 @@
 
 [在线访问](https://www.flywithme.top)
 
+[后端源码地址](https://github.com/flywithbug-vue-admin/go-eladmin)
 
 前端使用Vue + element-ui
-后端使用 golang + mongodb
 
   
 - **主要框架**   
