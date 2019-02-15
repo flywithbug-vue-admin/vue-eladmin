@@ -9,10 +9,13 @@
       </fixed-button>
     </section>
     <eForm ref="form" :is-add="true"/>
+    <el-table :data="data"
+              size="small"
+              border style="width: 100%;">
+      <el-table-column prop="id" label="ID"/>
 
-
+    </el-table>
   </div>
-
 </template>
 
 <script>
@@ -32,11 +35,20 @@ export default {
     eHeader
   },
   mixins: [initData],
+  data() {
+    return {
+    }
+  },
+  created() {
+    this.$nextTick(() => {
+      this.init()
+    })
+  },
   methods: {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = '/app/list'
+      this.url = '/tools/model/list'
       const sort = '+id'
       this.params = { page: this.page, size: this.size, sort: sort }
       return true

@@ -1,7 +1,6 @@
 <template>
   <div class="head-container">
     <!-- 搜索 -->
-    关键字
     <el-input
       v-model="query.name"
       :placeholder="$t('query.model_query')"
@@ -9,14 +8,9 @@
       style="width: 180px;  margin-right: 5px"
       class="filter-item"
       @keyup.enter.native="toQuery"/>
-    APP
-    <el-input
-      v-model="query.owner"
-      :placeholder="$t('query.app_name')"
-      clearable
-      style="width: 120px; margin-right: 5px"
-      class="filter-item"
-      @keyup.enter.native="toQuery"/>
+    <el-select v-model="query.appId" clearable placeholder="选择应用" class="filter-item" style="width: 130px" @change="toQuery">
+      <el-option v-for="item in appList" :key="item.key" :label="item.name" :value="item.id"/>
+    </el-select>
     <el-button
       v-waves
       class="filter-item"
@@ -45,13 +39,13 @@
 <script>
 import waves from '@/directive/waves' // Waves directive
 import checkPermission from '@/utils/permission' // 权限判断函数
-import { parseTime } from '@/utils/index'
 import eForm from './form'
+import { simpleList } from '@/api/app'
+
 // 查询条件
 export default {
   components: { eForm },
   directives: { waves },
-
   props: {
     query: {
       type: Object,
@@ -60,9 +54,12 @@ export default {
   },
   data() {
     return {
-      downloadLoading: false
-
+      downloadLoading: false,
+      appList: null
     }
+  },
+  created() {
+    this.getSimpleAppList()
   },
   methods: {
     checkPermission,
@@ -71,7 +68,13 @@ export default {
       this.$parent.page = 0
       this.$parent.init()
     },
-
+    getSimpleAppList() {
+      simpleList().then(response => {
+        if (response.list) {
+          this.appList = response.list
+        }
+      })
+    }
   }
 }
 </script>
