@@ -50,7 +50,12 @@ export default {
     beforeInit() {
       this.url = '/tools/model/list'
       const sort = '+id'
-      this.params = { page: this.page, size: this.size, sort: sort }
+      const query = this.query
+      const name = query.name
+      const appId = query.appId
+      this.params = { page: this.page, size: this.size, sort: sort,appId:appId, name:name }
+      if (appId) this.params["appId"] = appId
+      if (name) this.params["name"] = name
       return true
     }
 
