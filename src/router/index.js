@@ -63,6 +63,20 @@ export  const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/tool',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'model/detail',
+        component: () => import('@/views/devtools/model/detail'),
+        name: 'detail',
+        meta: { title: 'detail', icon: 'detail' }
+      }
+    ]
+  },
   // { path: '*', redirect: '/404', hidden: true }
 ]
 

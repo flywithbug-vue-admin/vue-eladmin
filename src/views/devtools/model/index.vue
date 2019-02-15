@@ -10,9 +10,26 @@
     </section>
     <eForm ref="form" :is-add="true"/>
     <el-table :data="data"
-              size="small"
               border style="width: 100%;">
-      <el-table-column prop="id" label="ID"/>
+      <el-table-column prop="id" label="ID" width="80px"/>
+      <el-table-column prop="name" label="模型名称" >
+        <template slot-scope="scope">
+          <router-link :to="{path:'/tool/model/detail',query:{id:scope.row.id}}"
+                       style="color: #3794FF; font-weight: revert; font-size: 16px;">
+            {{scope.row.name}}
+          </router-link>
+        </template>;
+      </el-table-column>
+      <el-table-column prop="alias" label="别名"/>
+      <el-table-column prop="desc" label="描述">
+      </el-table-column>
+      <el-table-column prop="create_time" label="注册日期">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.create_time * 1000) }}</span>
+        </template>
+      </el-table-column>
+
+
     </el-table>
 
     <!--分页组件-->
@@ -64,8 +81,7 @@ export default {
       if (appId) this.params["appId"] = appId
       if (name) this.params["name"] = name
       return true
-    }
-
+    },
   }
 }
 </script>
@@ -80,4 +96,8 @@ export default {
     }
   }
 
+  .router-link-active {
+    text-decoration-line: underline;
+    text-decoration: #3794FF;
+  }
 </style>
