@@ -13,8 +13,15 @@
               size="small"
               border style="width: 100%;">
       <el-table-column prop="id" label="ID"/>
-
     </el-table>
+
+    <!--分页组件-->
+    <el-pagination
+      :total="total"
+      style="margin-top: 8px;"
+      layout="total, prev, pager, next, sizes"
+      @size-change="sizeChange"
+      @current-change="pageChange"/>
   </div>
 </template>
 
@@ -49,7 +56,7 @@ export default {
     checkPermission,
     beforeInit() {
       this.url = '/tools/model/list'
-      const sort = '+id'
+      const sort = '-id'
       const query = this.query
       const name = query.name
       const appId = query.appId
