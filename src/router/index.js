@@ -73,7 +73,7 @@ export  const constantRouterMap = [
         path: 'model/detail',
         component: () => import('@/views/devtools/model/detail'),
         name: 'detail',
-        meta: { title: 'model_detail', icon: 'detail' }
+        meta: { title: '模型详情页面', icon: 'detail' }
       }
     ]
   },
