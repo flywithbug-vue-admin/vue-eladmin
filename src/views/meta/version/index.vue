@@ -257,12 +257,15 @@
   </div>
 </template>
 
+<!--TODO 页面优化-->
+
 <script>
 import fixedButton from '@/components/FixedButton'
 import Pagination from '@/components/Pagination'
 import { simpleList } from '@/api/app'
 import { list, add, edit, editStatus, del } from '@/api/appVersion'
 import { formatDate } from '@/utils/date'
+
 import ElTableFooter from 'element-ui'
 import store from '@/store'
 
@@ -494,7 +497,10 @@ export default {
       if (!time || time === 0) {
         return '-'
       }
-      const date = new Date(time * 1000)
+      if (time.toString().length < 11){
+        time = time * 1000
+      }
+      const date = new Date(time )
       return formatDate(date, 'yyyy-MM-dd')
     },
 
@@ -609,7 +615,10 @@ export default {
           this.temp.lock_time = this.temp.lock_time.getTime() / 1000
           this.temp.gray_time = this.temp.gray_time.getTime() / 1000
           this.temp.approval_time = this.temp.approval_time.getTime() / 1000
-          this.temp.release_time = this.temp.release_time.getTime() / 1000
+          if (this.temp.release_time){
+            this.temp.release_time = this.temp.release_time.getTime() / 1000
+          }
+
 
           if (this.temp.status < 2) {
             approval_time = this.temp.approval_time
