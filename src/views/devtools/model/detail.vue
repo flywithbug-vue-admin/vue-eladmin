@@ -19,9 +19,11 @@
 import { getModel } from '@/api/model'
 import eInfo   from './detail/info'
 import eOperation   from './detail/operation'
+import initData from '@/mixins/initData'
 
 export default {
   components:{eInfo,eOperation},
+  mixins: [initData],
   created() {
     console.log("created")
     this.modelId = this.$route.query.id
@@ -35,6 +37,7 @@ export default {
     }
   },
   methods: {
+
     getDataModel(){
       getModel(this.modelId).then(res => {
         this.dataModel = res.model

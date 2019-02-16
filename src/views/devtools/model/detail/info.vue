@@ -12,7 +12,6 @@
         </el-col>
         <el-col :span="12">
           <div>
-            <!--TODO 模型select-->
             <el-form  :model="dataModel" label-width="80px">
               <el-form-item label="父类">
                 <el-select v-model="optionValue"
@@ -40,7 +39,8 @@
 </template>
 
 <script>
-	export default {
+  import { queryModel } from '@/api/model'
+  export default {
 		name: 'info',
     props: {
 		  dataModel: {
@@ -49,19 +49,19 @@
       }
     },
     created() {
-
     },
     data() {
 		  return {
         optionValue:'',
         loading:false,
         options: [],
-
       }
     },
     methods: {
       queryManager(name) {
-
+        queryModel(name).then(res => {
+          this.options = res.list
+        })
       },
     }
 	}
