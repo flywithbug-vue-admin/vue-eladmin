@@ -5,7 +5,7 @@
     <tree-table v-loading="loading" :data="data" :expand-all="true" :columns="columns" border size="medium">
       <el-table-column :label="$t('table.create_time')" prop="createTime">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.create_time*1000) }}</span>
+          <span>{{ parseTime(scope.row.create_time) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('actions.action')" width="150px" align="center">

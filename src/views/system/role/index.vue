@@ -7,7 +7,7 @@
       <el-table-column :label="$t('table.desc')" prop="note"/>
       <el-table-column :label="$t('table.create_time')" prop="create_time">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.create_time*1000) }}</span>
+          <span>{{ parseTime(scope.row.create_time) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('actions.action')" width="150px" align="center">

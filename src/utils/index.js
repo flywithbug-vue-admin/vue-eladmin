@@ -4,6 +4,9 @@
 
 export function parseTime(time) {
   if (time) {
+    if (time.toString().length < 11){
+      time = time * 1000
+    }
     var date = new Date(time)
     var year = date.getFullYear()
     /* 在日期格式中，月份是从0开始的，因此要加0

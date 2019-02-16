@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column prop="createTime" label="注册日期">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime*1000) }}</span>
+          <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="150px" align="center">

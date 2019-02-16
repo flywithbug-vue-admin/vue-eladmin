@@ -82,7 +82,7 @@
         align="center"
         width="200px">
         <template slot-scope="scope">
-          <span> {{ parseTime(scope.row.create_time*1000) }} </span>
+          <span> {{ parseTime(scope.row.create_time) }} </span>
         </template>
       </el-table-column>
       <el-table-column
