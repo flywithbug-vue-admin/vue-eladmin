@@ -72,6 +72,7 @@ export default {
       simpleList().then(response => {
         if (response.list) {
           this.appList = response.list
+          this.$parent.appList = this.appList
         }
       })
     }

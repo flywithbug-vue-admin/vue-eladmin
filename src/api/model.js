@@ -7,10 +7,22 @@ export function getModel(id) {
   })
 }
 
-export function queryModel(name) {
+export function queryModels(query) {
   return client({
-    url: '/tools/model/list?name='+ name,
+    url: '/tools/model/list',
     method: 'get',
+    params:query
   })
 }
+
+
+
+export function edit(param) {
+  return client({
+    url: '/tools/model',
+    method: 'put',
+    data:param
+  })
+}
+
 

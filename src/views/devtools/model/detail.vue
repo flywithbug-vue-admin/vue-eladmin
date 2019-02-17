@@ -6,7 +6,7 @@
     <!--TODO -->
     <e-operation></e-operation>
     <div class="tDesc">
-      <label style="margin-left: 5px;color: rgb(104,178,77)">
+      <label style="margin-left: 5px;color: rgb(104,178,77);font-size: 18px">
         {{dataModel.desc}}
       </label>
     </div>
@@ -31,16 +31,17 @@ export default {
   },
   data() {
     return {
-      dataModel:{name:'',parent:{name:''}},
+      dataModel:{name:'',parent:{name:''},owner:{username:''}},
       modelId:undefined,
-      loading: true
+      loading: true,
+      appList:[]
     }
   },
   methods: {
-
     getDataModel(){
       getModel(this.modelId).then(res => {
         this.dataModel = res.model
+        if (!this.dataModel.parent)this.dataModel.parent = {username:''}
         this.loading = false
       })
     }
