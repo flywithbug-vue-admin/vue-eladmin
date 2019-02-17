@@ -25,4 +25,15 @@ export function edit(param) {
   })
 }
 
+export function model_apps(query) {
+  return client({
+    url: '/tools/model_apps',
+    method: 'get',
+    params:query
+  })
+}
+
+
+
+
 

@@ -12,17 +12,21 @@
     </div>
     <e-info :dataModel="dataModel"></e-info>
 
+    <e-app :dataModel="dataModel"></e-app>
+
+
   </div>
 </template>
 
 <script>
 import { getModel } from '@/api/model'
 import eInfo   from './detail/info'
+import eApp   from './detail/app'
 import eOperation   from './detail/operation'
 import initData from '@/mixins/initData'
 
 export default {
-  components:{eInfo,eOperation},
+  components:{eInfo,eOperation,eApp},
   mixins: [initData],
   created() {
     console.log("created")

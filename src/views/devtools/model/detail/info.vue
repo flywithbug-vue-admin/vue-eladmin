@@ -136,7 +136,6 @@
         }
         edit(param).then(() => {
           this.formEdited = false
-          this.pClass = ''
           this.$notify({
             title: '修改成功',
             type: 'success',
@@ -161,7 +160,7 @@
 
 <style scoped>
   .app-container {
-    padding: 20px;
+    margin-left: 10px;
     width: auto;
   }
 
