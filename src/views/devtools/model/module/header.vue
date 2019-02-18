@@ -9,9 +9,8 @@
       class="filter-item"
       @keyup.enter.native="toQuery"/>
     <el-select v-model="query.appId"
-               filterable clearable
-               placeholder="选择应用"
-               class="filter-item" style="width: 130px" @change="toQuery">
+               filterable  clearable
+               placeholder="选择应用" class="filter-item" style="width: 130px" @change="toQuery">
       <el-option v-for="item in appList" :key="item.key" :label="item.name" :value="item.id"/>
     </el-select>
     <el-button

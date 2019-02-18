@@ -33,7 +33,7 @@ export function model_apps(query) {
   })
 }
 
-export function modifyAppModelVersion(data) {
+export function modifyVersion(data) {
   return client({
     url: '/tools/model_app/version',
     method: 'put',
@@ -41,13 +41,22 @@ export function modifyAppModelVersion(data) {
   })
 }
 
-export function removeAppModelRelation(data) {
+export function removeRelation(data) {
   return client({
     url: '/tools/model_app',
     method: 'Delete',
     data:data
   })
 }
+
+export function addRelation(data) {
+  return client({
+    url: '/tools/model_app',
+    method: 'POST',
+    data:data
+  })
+}
+
 
 
 

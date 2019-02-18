@@ -21,7 +21,7 @@
                 remote
                 clearable
                 filterable
-                @focus="versionInputChanged(props.row)"
+                @focus="setCurrentAppId(props.row.app.id)"
                 placeholder="请输入版本号关键字">
                 <el-option
                   v-for="item in options"
@@ -30,7 +30,6 @@
                   :value="item.version"/>
               </el-select>
             </div>
-
             <div class="contentDiv">
               <el-popover
                 v-show="props.row.option === '' && props.row.model.start_version != '-' && props.row.model.start_version != ''"
@@ -112,17 +111,62 @@
       </el-button>
     </div>
 
+
+
+    <!--Add model relation-->
   <el-dialog :append-to-body="true" :visible.sync="dialog" title="添加应用" width="400px">
-    <el-form  :model="form" label-width="90px" :rules="rules">
+    <el-form  :model="form" label-width="90px" >
       <el-form-item label="应用名称" prop="name">
         <el-select v-model="form.appId"
                    filterable clearable
                    placeholder="选择应用"
-                   class="filter-item" style="width: 130px">
-          <el-option v-for="item in simpleAppList" :key="item.key" :label="item.name" :value="item.id"/>
+                   @change="selectorChanged"
+                   class="filter-item" >
+          <el-option v-for="item in simpleAppList"
+                     :key="item.key"
+                     :label="item.name"
+                     :disabled="item.disabled"
+                     :value="item.id"/>
         </el-select>
-
       </el-form-item>
+
+      <el-form-item label="起始版本" >
+        <el-select
+          v-model="form.startVersion"
+          :remote-method="queryAppVersion"
+          :loading="loading"
+          style="margin-top: 5px"
+          remote
+          :disabled="form.appId === null"
+          clearable
+          filterable
+          placeholder="请输入版本号关键字">
+          <el-option
+            v-for="item in options"
+            :key="item.version"
+            :label="item.version"
+            :value="item.version"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="结束版本" >
+        <el-select
+          v-model="form.endVersion"
+          :remote-method="queryAppVersion"
+          :loading="loading"
+          style="margin-top: 5px"
+          remote
+          :disabled="form.appId === null"
+          clearable
+          filterable
+          placeholder="请输入版本号关键字">
+          <el-option
+            v-for="item in options"
+            :key="item.version"
+            :label="item.version"
+            :value="item.version"/>
+        </el-select>
+      </el-form-item>
+
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="text" @click="dialog = false">取消</el-button>
@@ -136,8 +180,8 @@
 <script>
   import {
     model_apps,
-    modifyAppModelVersion,
-    removeAppModelRelation} from '@/api/model'
+    modifyVersion,addRelation,
+    removeRelation} from '@/api/model'
   import { list} from '@/api/appVersion'
   import {simpleList} from  '@/api/app'
 
@@ -152,26 +196,23 @@
     data() {
 		  return {
         loading:false,
+        modelId:0,
         list:[],
         options:[],
         currentAppId:0,
         dialog:false,
         simpleAppList:[],
-        form:{appName:'',startVersion:'',endVersion:'',appId:''},
-        rules: {
-          name: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-        }
+        form:{startVersion:'',endVersion:'',appId:null}
       }
     },
     created() {
-		  if (this.dataModel.id) this.getModelApps()
+		  this.modelId = this.dataModel.id
+		  this.getModelApps()
       this.getSimpleAppList()
     },
     watch: {
       dataModel: function() {
+        this.modelId = this.dataModel.id
         this.getModelApps()
       },
     },
@@ -181,7 +222,7 @@
       },
       getModelApps() {
         const query = {
-          modelId:this.dataModel.id
+          modelId:this.modelId
         }
         model_apps(query).then(res => {
           this.list = res.list
@@ -198,7 +239,6 @@
         }
         list(query).then(res => {
           this.options = res.list
-
         })
       },
       rowClicked(row,event){
@@ -206,14 +246,14 @@
           this.$refs.refTable.toggleRowExpansion(row)
         }
       },
-      versionInputChanged(value){
-        this.currentAppId = value.app.id
+      setCurrentAppId(value){
+        this.currentAppId = value
       },
       deleteAppModel(value){
         const data = {
           id:value.model.id
         }
-        removeAppModelRelation(data).then(res => {
+        removeRelation(data).then(res => {
           this.$notify({
             title: '删除成功',
             type: 'success',
@@ -223,10 +263,38 @@
         })
       },
       addAction() {
+        this.currentAppId = 0
         this.dialog = true
+        for ( let index in this.simpleAppList) {
+          const itemApp = this.simpleAppList[index]
+          this.list.forEach(function(item) {
+            if ( itemApp.id === item.app.id){
+              itemApp.disabled = true
+            }
+          })
+        }
       },
       doSubmit(){
-        console.log("addAppRelation")
+        const  data = {
+          app_id:this.form.appId,
+          model_id:this.modelId
+        }
+        console.log(this.mod)
+        if (this.form.startVersion) data.start_Version = this.form.startVersion
+        if (this.form.endVersion) data.end_Version = this.form.endVersion
+        addRelation(data).then(res => {
+          this.$notify({
+            title: '添加成功',
+            type: 'success',
+            duration: 1500
+          })
+          this.getModelApps()
+        })
+        this.dialog = false
+      },
+      selectorChanged() {
+        this.currentAppId = this.form.appId
+        this.options = []
       },
       getSimpleAppList(){
         simpleList().then(response => {
@@ -248,7 +316,7 @@
         if (value === 2) {
           data.end_version = row.option
         }
-        modifyAppModelVersion(data).then(() => {
+        modifyVersion(data).then(() => {
           this.$notify({
             title: '修改成功',
             type: 'success',
