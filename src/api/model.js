@@ -33,6 +33,14 @@ export function model_apps(query) {
   })
 }
 
+export function modifyAppModelVersion(data) {
+  return client({
+    url: '/tools/model_apps/version',
+    method: 'put',
+    data:data
+  })
+}
+
 
 
 
