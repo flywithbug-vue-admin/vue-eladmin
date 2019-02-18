@@ -36,10 +36,10 @@
                 v-show="props.row.option === '' && props.row.model.start_version != '-' && props.row.model.start_version != ''"
                 placement="top"
                 width="160"
-                :v-model="props.row.pop_status">
+                v-model="props.row.visible">
                 <p>确定要删除起始版本号么？</p>
                 <div style="text-align: right; margin: 0">
-                  <el-button size="mini" type="text" @click="cancelAction(props.row),1">取消</el-button>
+                  <el-button size="mini" type="text" @click="props.row.visible = false">取消</el-button>
                   <el-button type="primary" size="mini" @click="confirmAction(props.row,1)">确定</el-button>
                 </div>
                 <el-button slot="reference" type="danger" size="mini" round>删除开始版本</el-button>
@@ -95,7 +95,7 @@
             <p>确定要删除所属应用么？</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="props.row.visible2 = false;">取消</el-button>
-              <el-button type="primary" size="mini" @click="confirmAction(props.row,3)">确定</el-button>
+              <el-button type="primary" size="mini" @click="deleteAppModel(props.row)">确定</el-button>
             </div>
             <el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" round>删除</el-button>
           </el-popover>
@@ -103,18 +103,43 @@
       </el-table-column>
     </el-table>
 
-    <el-button>
-      {{ "所属App" }}
-    </el-button>
+    <div align="center" style="margin-top: 20px">
+      <el-button  type="primary"
+                  @click="addAction"
+                  plain size="mini"
+                  icon="el-icon-plus" round>
+        {{ "所属App" }}
+      </el-button>
+    </div>
 
+  <el-dialog :append-to-body="true" :visible.sync="dialog" title="添加应用" width="400px">
+    <el-form  :model="form" label-width="90px" :rules="rules">
+      <el-form-item label="应用名称" prop="name">
+        <el-select v-model="form.appId"
+                   filterable clearable
+                   placeholder="选择应用"
+                   class="filter-item" style="width: 130px">
+          <el-option v-for="item in simpleAppList" :key="item.key" :label="item.name" :value="item.id"/>
+        </el-select>
 
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="text" @click="dialog = false">取消</el-button>
+      <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
+    </div>
+  </el-dialog>
 
   </div>
 </template>
 
 <script>
-  import { model_apps,modifyAppModelVersion} from '@/api/model'
+  import {
+    model_apps,
+    modifyAppModelVersion,
+    removeAppModelRelation} from '@/api/model'
   import { list} from '@/api/appVersion'
+  import {simpleList} from  '@/api/app'
 
   export default {
 		name: 'app',
@@ -130,10 +155,20 @@
         list:[],
         options:[],
         currentAppId:0,
+        dialog:false,
+        simpleAppList:[],
+        form:{appName:'',startVersion:'',endVersion:'',appId:''},
+        rules: {
+          name: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+        }
       }
     },
     created() {
 		  if (this.dataModel.id) this.getModelApps()
+      this.getSimpleAppList()
     },
     watch: {
       dataModel: function() {
@@ -141,9 +176,6 @@
       },
     },
     methods: {
-		  cancelAction(value) {
-        value.row.pop_status = false
-      },
       confirmAction(value,tag) {
         this.modifyVersion(value,tag)
       },
@@ -178,7 +210,30 @@
         this.currentAppId = value.app.id
       },
       deleteAppModel(value){
-
+        const data = {
+          id:value.model.id
+        }
+        removeAppModelRelation(data).then(res => {
+          this.$notify({
+            title: '删除成功',
+            type: 'success',
+            duration: 1500
+          })
+          this.getModelApps()
+        })
+      },
+      addAction() {
+        this.dialog = true
+      },
+      doSubmit(){
+        console.log("addAppRelation")
+      },
+      getSimpleAppList(){
+        simpleList().then(response => {
+          if (response.list) {
+            this.simpleAppList = response.list
+          }
+        })
       },
       modifyVersion(row,value){
         if (row.option === '') {
@@ -199,7 +254,13 @@
             type: 'success',
             duration: 1500
           })
-          this.getModelApps()
+          if (value === 1) {
+            row.model.start_version = row.option
+          }
+          if (value === 2) {
+            row.model.end_version = row.option
+          }
+          row.option = ""
         })
       },
     }

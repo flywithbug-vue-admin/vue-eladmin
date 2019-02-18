@@ -35,8 +35,16 @@ export function model_apps(query) {
 
 export function modifyAppModelVersion(data) {
   return client({
-    url: '/tools/model_apps/version',
+    url: '/tools/model_app/version',
     method: 'put',
+    data:data
+  })
+}
+
+export function removeAppModelRelation(data) {
+  return client({
+    url: '/tools/model_app',
+    method: 'Delete',
     data:data
   })
 }
