@@ -39,7 +39,7 @@
                 :v-model="props.row.pop_status">
                 <p>确定要删除起始版本号么？</p>
                 <div style="text-align: right; margin: 0">
-                  <el-button size="mini" type="text" @click="cancelAction(props.row)">取消</el-button>
+                  <el-button size="mini" type="text" @click="cancelAction(props.row),1">取消</el-button>
                   <el-button type="primary" size="mini" @click="confirmAction(props.row,1)">确定</el-button>
                 </div>
                 <el-button slot="reference" type="danger" size="mini" round>删除开始版本</el-button>
@@ -60,10 +60,10 @@
                 v-show="props.row.option === ''&& props.row.model.end_version != '-' && props.row.model.end_version != ''"
                 placement="top"
                 width="160"
-                :v-model="props.row.pop_status">
+                v-model="props.row.visible1">
                 <p>确定要删除结束版本号么？</p>
                 <div style="text-align: right; margin: 0">
-                  <el-button size="mini" type="text" @click="cancelAction(props.row)">取消</el-button>
+                  <el-button size="mini" type="text" @click="props.row.visible1 = false;" >取消</el-button>
                   <el-button type="primary" size="mini" @click="confirmAction(props.row,2)">确定</el-button>
                 </div>
                 <el-button slot="reference" type="danger" size="mini" round>删除结束版本</el-button>
@@ -91,10 +91,10 @@
           <el-popover
             placement="top"
             width="160"
-            :v-model="props.row.pop_status">
+            v-model="props.row.visible2">
             <p>确定要删除所属应用么？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="cancelAction(props.row)">取消</el-button>
+              <el-button size="mini" type="text" @click="props.row.visible2 = false;">取消</el-button>
               <el-button type="primary" size="mini" @click="confirmAction(props.row,3)">确定</el-button>
             </div>
             <el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" round>删除</el-button>
@@ -142,12 +142,9 @@
     },
     methods: {
 		  cancelAction(value) {
-		    value.pop_status = false
-        console.log("value:",value)
-
+        value.row.pop_status = false
       },
       confirmAction(value,tag) {
-        value.pop_status = false
         this.modifyVersion(value,tag)
       },
       getModelApps() {
@@ -173,7 +170,7 @@
         })
       },
       rowClicked(row,event){
-		    if (event.target.nodeName === "DIV") {
+		    if (event.target.nodeName != "BUTTON") {
           this.$refs.refTable.toggleRowExpansion(row)
         }
       },
