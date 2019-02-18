@@ -62,6 +62,7 @@
 <script>
   import {addRelation} from '@/api/model'
   import {simpleList} from  '@/api/app'
+  import { list} from '@/api/appVersion'
 
   export default {
 		name: 'appForm',

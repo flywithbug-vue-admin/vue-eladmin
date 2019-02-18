@@ -112,9 +112,9 @@
       </el-button>
     </div>
 
+    <!--添加app 关联-->
     <e-form :modelId="modelId" :appList="list" ref="appForm" @refreshList="refreshList"/>
     <hr style="border:1px dashed rgba(104,178,77,0.3);margin-top: 15px"/>
-
   </div>
 </template>
 
@@ -146,9 +146,13 @@
       }
     },
     created() {
+		  if (this.dataModel.id === 0)return
+      this.modelId = this.dataModel.id
+      this.getModelApps()
     },
     watch: {
       dataModel: function() {
+        if (this.dataModel.id === 0)return
         this.modelId = this.dataModel.id
         this.getModelApps()
       },
