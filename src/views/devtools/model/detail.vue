@@ -11,10 +11,7 @@
       </label>
     </div>
     <e-info :dataModel="dataModel"></e-info>
-
     <e-app :dataModel="dataModel"></e-app>
-
-
   </div>
 </template>
 

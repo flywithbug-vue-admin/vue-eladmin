@@ -12,7 +12,7 @@
     <el-table :data="data"
               border style="width: 100%;">
       <el-table-column prop="id" label="ID" width="80px"/>
-      <el-table-column prop="name" label="模型名称" >
+      <el-table-column prop="name" label="模型名称">
         <template slot-scope="scope">
           <router-link :to="{path:'/tool/model/detail',query:{id:scope.row.id},meta:{title:scope.row.name,appList:appList}}"
                        style="color: #3794FF; font-weight: revert; font-size: 16px;">

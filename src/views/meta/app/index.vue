@@ -10,6 +10,7 @@
       fit
       highlight-current-row
       style="width: 100%;">
+
       <el-table-column
         :label="$t('table.id')"
         prop="id"
