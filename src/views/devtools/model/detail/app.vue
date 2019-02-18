@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <div align="center" style="margin-bottom: 10px;margin-top: -5px"><el-tag size="mini">请配置App，否则可能会导致无法拉取到代码!</el-tag> </div>
+    <div align="center" style="margin-bottom: 10px;margin-top: -5px;"><el-tag size="mini" style="color: red">代码拉取功能等待完善!</el-tag> </div>
     <el-table v-loading="loading"
               :data="list"
               size="small"
@@ -111,68 +112,69 @@
       </el-button>
     </div>
 
-
-
     <!--Add model relation-->
-  <el-dialog :append-to-body="true" :visible.sync="dialog" title="添加应用" width="400px">
-    <el-form  :model="form" label-width="90px" >
-      <el-form-item label="应用名称" prop="name">
-        <el-select v-model="form.appId"
-                   filterable clearable
-                   placeholder="选择应用"
-                   @change="selectorChanged"
-                   class="filter-item" >
-          <el-option v-for="item in simpleAppList"
-                     :key="item.key"
-                     :label="item.name"
-                     :disabled="item.disabled"
-                     :value="item.id"/>
-        </el-select>
-      </el-form-item>
+    <el-dialog :append-to-body="true" :visible.sync="dialog" title="添加应用" width="400px">
+      <el-form  :model="form" label-width="90px" >
+        <el-form-item label="应用名称" prop="name">
+          <el-select v-model="form.appId"
+                     filterable clearable
+                     placeholder="选择应用"
+                     @change="selectorChanged"
+                     class="filter-item" >
+            <el-option v-for="item in simpleAppList"
+                       :key="item.key"
+                       :label="item.name"
+                       :disabled="item.disabled"
+                       :value="item.id"/>
+          </el-select>
+        </el-form-item>
 
-      <el-form-item label="起始版本" >
-        <el-select
-          v-model="form.startVersion"
-          :remote-method="queryAppVersion"
-          :loading="loading"
-          style="margin-top: 5px"
-          remote
-          :disabled="form.appId === null"
-          clearable
-          filterable
-          placeholder="请输入版本号关键字">
-          <el-option
-            v-for="item in options"
-            :key="item.version"
-            :label="item.version"
-            :value="item.version"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="结束版本" >
-        <el-select
-          v-model="form.endVersion"
-          :remote-method="queryAppVersion"
-          :loading="loading"
-          style="margin-top: 5px"
-          remote
-          :disabled="form.appId === null"
-          clearable
-          filterable
-          placeholder="请输入版本号关键字">
-          <el-option
-            v-for="item in options"
-            :key="item.version"
-            :label="item.version"
-            :value="item.version"/>
-        </el-select>
-      </el-form-item>
+        <el-form-item label="起始版本" >
+          <el-select
+            v-model="form.startVersion"
+            :remote-method="queryAppVersion"
+            :loading="loading"
+            style="margin-top: 5px"
+            remote
+            :disabled="form.appId === null"
+            clearable
+            filterable
+            placeholder="请输入版本号关键字">
+            <el-option
+              v-for="item in options"
+              :key="item.version"
+              :label="item.version"
+              :value="item.version"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="结束版本" >
+          <el-select
+            v-model="form.endVersion"
+            :remote-method="queryAppVersion"
+            :loading="loading"
+            style="margin-top: 5px"
+            remote
+            :disabled="form.appId === null"
+            clearable
+            filterable
+            placeholder="请输入版本号关键字">
+            <el-option
+              v-for="item in options"
+              :key="item.version"
+              :label="item.version"
+              :value="item.version"/>
+          </el-select>
+        </el-form-item>
 
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="dialog = false">取消</el-button>
-      <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
-    </div>
-  </el-dialog>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="text" @click="dialog = false">取消</el-button>
+        <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
+      </div>
+    </el-dialog>
+
+
+    <hr style="border:1px dashed rgba(104,178,77,0.3)"/>
 
   </div>
 </template>
