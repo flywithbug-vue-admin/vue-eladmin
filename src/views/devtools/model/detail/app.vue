@@ -103,7 +103,7 @@
       </el-table-column>
     </el-table>
 
-    <div align="center" style="margin-top: 20px">
+    <div align="center" style="margin-top: 10px">
       <el-button  type="primary"
                   @click="addAction"
                   plain size="mini"
@@ -112,69 +112,8 @@
       </el-button>
     </div>
 
-    <!--Add model relation-->
-    <el-dialog :append-to-body="true" :visible.sync="dialog" title="添加应用" width="400px">
-      <el-form  :model="form" label-width="90px" >
-        <el-form-item label="应用名称" prop="name">
-          <el-select v-model="form.appId"
-                     filterable clearable
-                     placeholder="选择应用"
-                     @change="selectorChanged"
-                     class="filter-item" >
-            <el-option v-for="item in simpleAppList"
-                       :key="item.key"
-                       :label="item.name"
-                       :disabled="item.disabled"
-                       :value="item.id"/>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="起始版本" >
-          <el-select
-            v-model="form.startVersion"
-            :remote-method="queryAppVersion"
-            :loading="loading"
-            style="margin-top: 5px"
-            remote
-            :disabled="form.appId === null"
-            clearable
-            filterable
-            placeholder="请输入版本号关键字">
-            <el-option
-              v-for="item in options"
-              :key="item.version"
-              :label="item.version"
-              :value="item.version"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="结束版本" >
-          <el-select
-            v-model="form.endVersion"
-            :remote-method="queryAppVersion"
-            :loading="loading"
-            style="margin-top: 5px"
-            remote
-            :disabled="form.appId === null"
-            clearable
-            filterable
-            placeholder="请输入版本号关键字">
-            <el-option
-              v-for="item in options"
-              :key="item.version"
-              :label="item.version"
-              :value="item.version"/>
-          </el-select>
-        </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="dialog = false">取消</el-button>
-        <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
-      </div>
-    </el-dialog>
-
-
-    <hr style="border:1px dashed rgba(104,178,77,0.3)"/>
+    <e-form :modelId="modelId" :appList="list" ref="appForm" @refreshList="refreshList"/>
+    <hr style="border:1px dashed rgba(104,178,77,0.3);margin-top: 15px"/>
 
   </div>
 </template>
@@ -182,13 +121,14 @@
 <script>
   import {
     model_apps,
-    modifyVersion,addRelation,
+    modifyVersion,
     removeRelation} from '@/api/model'
   import { list} from '@/api/appVersion'
-  import {simpleList} from  '@/api/app'
+  import eForm   from './appForm'
 
   export default {
 		name: 'app',
+    components: { eForm },
     props: {
       dataModel: {
         type:Object,
@@ -197,20 +137,15 @@
     },
     data() {
 		  return {
+        sup_this: this,
         loading:false,
         modelId:0,
         list:[],
         options:[],
         currentAppId:0,
-        dialog:false,
-        simpleAppList:[],
-        form:{startVersion:'',endVersion:'',appId:null}
       }
     },
     created() {
-		  this.modelId = this.dataModel.id
-		  this.getModelApps()
-      this.getSimpleAppList()
     },
     watch: {
       dataModel: function() {
@@ -219,6 +154,9 @@
       },
     },
     methods: {
+      refreshList() {
+        this.getModelApps()
+      },
       confirmAction(value,tag) {
         this.modifyVersion(value,tag)
       },
@@ -265,45 +203,13 @@
         })
       },
       addAction() {
-        this.currentAppId = 0
-        this.dialog = true
-        for ( let index in this.simpleAppList) {
-          const itemApp = this.simpleAppList[index]
-          this.list.forEach(function(item) {
-            if ( itemApp.id === item.app.id){
-              itemApp.disabled = true
-            }
-          })
-        }
-      },
-      doSubmit(){
-        const  data = {
-          app_id:this.form.appId,
-          model_id:this.modelId
-        }
-        console.log(this.mod)
-        if (this.form.startVersion) data.start_Version = this.form.startVersion
-        if (this.form.endVersion) data.end_Version = this.form.endVersion
-        addRelation(data).then(res => {
-          this.$notify({
-            title: '添加成功',
-            type: 'success',
-            duration: 1500
-          })
-          this.getModelApps()
-        })
-        this.dialog = false
+        this.$refs.appForm.dialog = true
+        this.$refs.appForm.appList = this.list
+        this.$refs.appForm.formatDisabledSimpleAppList()
       },
       selectorChanged() {
         this.currentAppId = this.form.appId
         this.options = []
-      },
-      getSimpleAppList(){
-        simpleList().then(response => {
-          if (response.list) {
-            this.simpleAppList = response.list
-          }
-        })
       },
       modifyVersion(row,value){
         if (row.option === '') {

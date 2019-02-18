@@ -16,7 +16,7 @@
         <el-table-column prop="name" label="属性名称"/>
         <el-table-column label="属性类型">
           <template slot-scope="scope">
-            {{scope.row.type}}
+            {{formatModelType(scope.row)}}
           </template>
         </el-table-column>
         <el-table-column label="必填">
@@ -50,9 +50,18 @@
 		    if (value) return "是"
 		    return "否"
       },
-      rowClicked(){
+      formatModelType(value) {
+		    if (value.model_name){
 
-      }
+        }
+        return value.type
+
+      },
+      rowClicked(row,event){
+        if (event.target.nodeName != "BUTTON") {
+          this.$refs.refTable.toggleRowExpansion(row)
+        }
+      },
     }
 	}
 </script>

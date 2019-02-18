@@ -7,7 +7,8 @@ const app = {
     },
     device: 'desktop',
     language: localStorage.getItem('language') || 'zh',
-    size: localStorage.getItem('size') || 'medium'
+    size: localStorage.getItem('size') || 'medium',
+    simpleList:[]
   },
   mutations: {
     TOGGLE_SIDEBAR(state) {

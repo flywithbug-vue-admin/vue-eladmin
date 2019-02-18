@@ -1,5 +1,10 @@
 <template>
   <div class="tOperation">
+
+    <!--TODO 完成其他功能-->
+    <el-tag type="danger" style="margin-right: 20px">TODO</el-tag>
+
+
     <el-button type="success" size="mini">生成代码</el-button>
     <el-button type="success" size="mini">模型关联</el-button>
     <el-button type="success" size="mini">历史记录</el-button>

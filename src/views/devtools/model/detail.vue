@@ -5,9 +5,9 @@
     </div>
     <!--TODO -->
     <e-operation></e-operation>
-    <div class="tDesc">
+    <div class="tAlias">
       <label style="margin-left: 5px;color: rgb(104,178,77);font-size: 18px">
-        {{dataModel.desc}}
+        {{dataModel.alias}}
       </label>
     </div>
     <e-info :dataModel="dataModel"></e-info>
@@ -23,13 +23,10 @@
   import eApp   from './detail/app'
   import eOperation   from './detail/operation'
   import eAttribute   from './detail/attribute'
-
-
   export default {
   components:{eInfo,eOperation,eApp,eAttribute},
   mixins: [initData],
   created() {
-    console.log("created")
     this.modelId = this.$route.query.id
     this.getDataModel()
   },
@@ -38,7 +35,6 @@
       dataModel:{name:'',parent:{name:''},owner:{username:''}},
       modelId:undefined,
       loading: true,
-      appList:[]
     }
   },
   methods: {
@@ -66,7 +62,7 @@
     /*justify-content:center;*/
   }
 
-  .tDesc{
+  .tAlias{
     width: 100%;
     height: 40px;
     font-weight: bolder;
