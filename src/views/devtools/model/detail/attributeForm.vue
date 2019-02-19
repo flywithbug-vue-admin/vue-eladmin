@@ -8,6 +8,7 @@
         <el-select v-model="form.type"
                    placeholder="输入模型关键字"
                    style="width: 100%"
+                   clearable
                    @change="selectorChanged">
           <el-option v-for="item in options"
                      :key="item.name"
@@ -20,10 +21,11 @@
       <el-form-item v-show="mQuery" label="选择模型" prop="properType">
         <el-select v-model="form.model_id"
                    placeholder="输入模型关键字"
-                   filterable
                    remote
                    clearable
+                   filterable
                    :remote-method="queryModelList"
+                   @change="selectionModelChanged"
                    style="width: 100%">
           <el-option v-for="item in list"
                      :key="item.id"
@@ -31,7 +33,6 @@
                      :value="item.id"/>
         </el-select>
       </el-form-item>
-
 
       <el-form-item label="注释" prop="comments">
         <el-input   v-model="form.comments"></el-input>
@@ -49,7 +50,6 @@
                      :value="item.id"/>
         </el-select>
       </el-form-item>
-
     </el-form>
 
 
@@ -83,7 +83,6 @@
           properType: [
             { required: true, message: "必须选择属性类型", trigger: 'blur' }
           ],
-
         },
         mQuery:false,
         dialog: false,
@@ -98,14 +97,23 @@
           {name: "Array"},
           {name: "Object"},
         ],
+        optionsArray:[
+          {name: "String",id:-1},
+          {name: "Int",id:-2},
+          {name: "Float",id:-3},
+          {name: "Bool",id:-4}
+        ],
         options1:[
           {name: "是",id:true},
           {name: "否",id:false},
         ],
-        list:[]
+        list:this.optionsArray
       }
     },
     methods: {
+		  resetForm() {
+		    this.form = {type:'String', name:'',model_name:'',model_id:null,comments:'',required:true,default:''}
+      },
       doSubmit() {
         const data = {
           id:this.modelId,
@@ -119,7 +127,7 @@
           })
           this.dialog = false
           this.$emit('refreshData')
-
+          this.resetForm()
         })
       },
       selectorChanged(value) {
@@ -131,6 +139,22 @@
           this.list = []
         }
       },
+      selectionModelChanged(value){
+		    switch (value) {
+          case -1:
+            this.form.model_name = 'String'
+            break;
+          case -2:
+            this.form.model_name = 'Int'
+            break;
+          case -3:
+            this.form.model_name = 'Float'
+            break;
+          case -4:
+            this.form.model_name = 'Bool'
+            break;
+        }
+      },
       queryModelList(value) {
         if (value.length == 0)return
         const data = {
@@ -138,7 +162,11 @@
           exc:this.modelId
         }
         queryModels(data).then(res => {
-          this.list = res.list
+          if (this.form.type === 'Array') {
+            this.list = res.list.concat(this.optionsArray)
+          }else {
+            this.list = res.list
+          }
         })
       }
 		}

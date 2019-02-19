@@ -62,6 +62,9 @@
 		    return "否"
       },
       formatModelType(value) {
+		    if (value.model_name){
+		      return value.type + ": " + value.model_name
+        }
         return value.type
       },
       addAction(){
