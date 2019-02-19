@@ -267,4 +267,3 @@ npm run build --report
 ```
 
 使用PanJiaChen的:[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)搭好的基础框架
-借鉴[elunez](https://github.com/elunez/eladmin)页面
