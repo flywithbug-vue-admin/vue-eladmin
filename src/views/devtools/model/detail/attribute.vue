@@ -62,8 +62,13 @@
 		    return "否"
       },
       formatModelType(value) {
-		    if (value.model_name){
-		      return value.type + ": " + value.model_name
+		    switch (value.type) {
+          case 'Array':
+            return value.type + ": []" + value.model_name
+            break
+          case 'Object':
+            return value.type + ": " + value.model_name
+            break
         }
         return value.type
       },

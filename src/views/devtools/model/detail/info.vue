@@ -41,7 +41,7 @@
         <el-col :span="12">
           <div>
             <el-form  :model="dataModel" label-width="90px">
-              <el-form-item label="业务线(TODO)">
+              <el-form-item label="业务线">
                 <el-input disabled v-model="dataModel.alias"></el-input>
               </el-form-item>
             </el-form>
