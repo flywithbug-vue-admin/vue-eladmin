@@ -15,6 +15,7 @@
             <div style="width: 34%">
               修改版本号
               <el-select
+                size="mini"
                 v-model="props.row.option"
                 :remote-method="queryAppVersion"
                 :loading="loading"
@@ -64,7 +65,8 @@
                 <p>确定要删除结束版本号么？</p>
                 <div style="text-align: right; margin: 0">
                   <el-button size="mini" type="text" @click="props.row.visible1 = false;" >取消</el-button>
-                  <el-button type="primary" size="mini" @click="confirmAction(props.row,2);props.row.visible1 = false">确定</el-button>
+                  <el-button type="primary" size="mini"
+                             @click="confirmAction(props.row,2);props.row.visible1 = false">确定</el-button>
                 </div>
                 <el-button slot="reference" type="danger" size="mini" round>删除结束版本</el-button>
               </el-popover>
@@ -79,6 +81,19 @@
                 {{ "修改结束版本" }}
               </el-button>
             </div>
+            <div  style="width: 180px">
+              <el-popover
+                placement="top"
+                width="160"
+                v-model="props.row.visible2">
+                <p>确定要删除所属应用么？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button size="mini" type="text" @click="props.row.visible2 = false;">取消</el-button>
+                  <el-button type="primary" size="mini" @click="deleteAppModel(props.row)">确定</el-button>
+                </div>
+                <el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" round>删除关联应用</el-button>
+              </el-popover>
+            </div>
           </div>
         </template>
 
@@ -86,21 +101,21 @@
       <el-table-column prop="app.name" label="应用名"/>
       <el-table-column prop="model.start_version" label="起始版本"/>
       <el-table-column prop="model.end_version" label="结束版本"/>
-      <el-table-column  label="操作" width="120px">
-        <template slot-scope="props">
-          <el-popover
-            placement="top"
-            width="160"
-            v-model="props.row.visible2">
-            <p>确定要删除所属应用么？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="props.row.visible2 = false;">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteAppModel(props.row)">确定</el-button>
-            </div>
-            <el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" round>删除</el-button>
-          </el-popover>
-        </template>
-      </el-table-column>
+      <!--<el-table-column  label="操作" width="120px">-->
+        <!--<template slot-scope="props">-->
+          <!--<el-popover-->
+            <!--placement="top"-->
+            <!--width="160"-->
+            <!--v-model="props.row.visible2">-->
+            <!--<p>确定要删除所属应用么？</p>-->
+            <!--<div style="text-align: right; margin: 0">-->
+              <!--<el-button size="mini" type="text" @click="props.row.visible2 = false;">取消</el-button>-->
+              <!--<el-button type="primary" size="mini" @click="deleteAppModel(props.row)">确定</el-button>-->
+            <!--</div>-->
+            <!--<el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" round>删除</el-button>-->
+          <!--</el-popover>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
     </el-table>
 
     <div align="center" style="margin-top: 10px">
@@ -197,7 +212,7 @@
         const data = {
           id:value.model.id
         }
-        removeRelation(data).then(res => {
+        removeRelation(data).then(() => {
           this.$notify({
             title: '删除成功',
             type: 'success',

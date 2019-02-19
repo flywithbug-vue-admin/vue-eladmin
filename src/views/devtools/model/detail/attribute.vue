@@ -25,6 +25,24 @@
           </template>
         </el-table-column>
         <el-table-column prop="comments" label="属性说明"/>
+
+        <el-table-column  label="操作" width="120px">
+          <template slot-scope="props">
+            <el-popover
+              placement="top"
+              width="160"
+              v-model="props.row.visible">
+              <p>确定要删除所属应用么？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="props.row.visible = false;">取消</el-button>
+                <el-button type="primary" size="mini" @click="confirmAction(props.row);props.row.visible = false">确定</el-button>
+              </div>
+              <el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" round>删除</el-button>
+            </el-popover>
+          </template>
+        </el-table-column>
+
+
       </el-table>
 
       <div align="center" style="margin-top: 10px">
@@ -35,7 +53,6 @@
           {{ "模型属性" }}
         </el-button>
       </div>
-
       <eForm :modelId="dataModel.id" ref="appForm" @refreshData="refreshData" ></eForm>
     </div>
 </template>
@@ -71,6 +88,9 @@
             break
         }
         return value.type
+      },
+      confirmAction(){
+
       },
       addAction(){
            this.$refs.appForm.dialog = true
