@@ -4,14 +4,9 @@
       <el-form-item label="属性名" prop="name">
         <el-input   v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="属性类型" prop="properType">
+      <el-form-item label="类型" prop="properType">
         <el-select v-model="form.type"
                    placeholder="输入模型关键字"
-                   filterable
-                   remote
-                   clearable
-                   @clear="clearAction"
-                   :remote-method="queryModelList"
                    style="width: 100%"
                    @change="selectorChanged">
           <el-option v-for="item in options"
@@ -28,22 +23,43 @@
                    filterable
                    remote
                    clearable
-                   @clear="clearAction"
                    :remote-method="queryModelList"
-                   style="width: 100%"
-                   @change="modelSectionChanged">
+                   style="width: 100%">
           <el-option v-for="item in list"
                      :key="item.id"
                      :label="item.name"
                      :value="item.id"/>
         </el-select>
       </el-form-item>
+
+
+      <el-form-item label="注释" prop="comments">
+        <el-input   v-model="form.comments"></el-input>
+      </el-form-item>
+      <el-form-item label="默认值" prop="comments">
+        <el-input   v-model="form.default"></el-input>
+      </el-form-item>
+      <el-form-item label="必须" prop="comments">
+        <el-select v-model="form.required"
+                   placeholder="选择是否必须"
+                   style="width: 100%">id
+          <el-option v-for="item in options1"
+                     :key="item.id"
+                     :label="item.name"
+                     :value="item.id"/>
+        </el-select>
+      </el-form-item>
+
     </el-form>
+
+
     <div slot="footer" class="dialog-footer">
       <el-button type="text" @click="dialog = false">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
   </el-dialog>
+
+
 </template>
 
 <script>
@@ -72,22 +88,26 @@
         mQuery:false,
         dialog: false,
         loading: false,
-        form:{name:'',model_name:'',model_id:null,comments:'',required:false,default:''},
+        form:{type:'String', name:'',model_name:'',model_id:null,comments:'',required:false,default:''},
         currentAppId:0,
-        optionValue:'String',
         options:[
-          {name: "String",id:1},
-          {name: "Int",id:2},
-          {name: "Float",id:3},
-          {name: "Bool",id:4},
-          {name: "Array",id:5},
-          {name: "Object",id:6},
+          {name: "String"},
+          {name: "Int"},
+          {name: "Float"},
+          {name: "Bool"},
+          {name: "Array"},
+          {name: "Object"},
+        ],
+        options1:[
+          {name: "是",id:true},
+          {name: "否",id:false},
         ],
         list:[]
       }
     },
     methods: {
       doSubmit() {
+        console.log("doSubmit",this.form)
 
       },
       selectorChanged(value) {
@@ -95,27 +115,15 @@
           this.mQuery = true
         } else {
           this.mQuery = false
+          this.form.model_id = null
+          this.list = []
         }
-      },
-      modelSectionChanged(value) {
-        console.log("modelSectionChanged:",value)
-      },
-      clearAction() {
-        this.options = [
-          {name: "String",id:1},
-          {name: "Int",id:2},
-          {name: "Float",id:3},
-          {name: "Bool",id:4},
-          {name: "Array",id:5},
-          {name: "Object",id:6},
-        ]
       },
       queryModelList(value) {
         if (value.length == 0)return
         const data = {
           name:value,
           exc:this.modelId
-
         }
         queryModels(data).then(res => {
           this.list = res.list
