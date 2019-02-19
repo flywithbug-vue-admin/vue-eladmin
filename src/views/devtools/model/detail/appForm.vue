@@ -1,7 +1,7 @@
 <template>
   <el-dialog :loading="loading" :append-to-body="true" :visible.sync="dialog" title="添加应用" width="400px">
-    <el-form  :model="form" label-width="90px" >
-      <el-form-item label="应用名称" prop="name">
+    <el-form ref="form"  :model="form" label-width="90px" :rules="rules">
+      <el-form-item label="应用名称" prop="appId">
         <el-select v-model="form.appId"
                    filterable clearable
                    placeholder="选择应用"
@@ -14,7 +14,7 @@
                      :value="item.id"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="起始版本" >
+      <el-form-item label="起始版本" prop="startVersion">
         <el-select
           v-model="form.startVersion"
           :remote-method="queryAppVersion"
@@ -32,7 +32,7 @@
             :value="item.version"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="结束版本" >
+      <el-form-item label="结束版本" prop="endVersion">
         <el-select
           v-model="form.endVersion"
           :remote-method="queryAppVersion"
@@ -54,7 +54,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="text" @click="dialog = false">取消</el-button>
-      <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
+      <el-button :loading="loading" type="primary" @click="doneAction">确认</el-button>
     </div>
   </el-dialog>
 </template>
@@ -80,7 +80,12 @@
         options:[],
         form:{startVersion:'',endVersion:'',appId:null},
         simpleAppList:[],
-        appList:[]
+        appList:[],
+        rules: {
+          appId: [
+            { required: true, message: "必须选择所属应用", trigger: 'blur' },
+          ],
+        },
       }
     },
     created() {
@@ -114,7 +119,19 @@
         this.form.appId = null
         this.form.endVersion = ''
         this.form.startVersion = ''
-
+      },
+      doneAction(){
+        this.$refs['form'].validate((valid) => {
+          if (valid){
+            if (this.form.startVersion &&
+              this.form.endVersion &&
+              this.form.startVersion > this.form.endVersion) {
+              this.$message.error('开始版本不能大于结束版本')
+              return
+            }
+            this.doSubmit()
+          }
+        })
       },
       doSubmit(){
         const data = {
@@ -140,6 +157,7 @@
         this.options = []
       },
       queryAppVersion(value){
+        console.log("queryAppVersion")
         if (this.currentAppId == 0){
           return
         }
@@ -147,8 +165,8 @@
           app_id:this.currentAppId,
           version:value,
           size:5,
+          sort: '+id',
         }
-
         list(query).then(res => {
           this.options = res.list
         })

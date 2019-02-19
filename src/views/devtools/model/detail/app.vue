@@ -40,7 +40,7 @@
                 <p>确定要删除起始版本号么？</p>
                 <div style="text-align: right; margin: 0">
                   <el-button size="mini" type="text" @click="props.row.visible = false">取消</el-button>
-                  <el-button type="primary" size="mini" @click="confirmAction(props.row,1)">确定</el-button>
+                  <el-button type="primary" size="mini" @click="confirmAction(props.row,1);props.row.visible = false">确定</el-button>
                 </div>
                 <el-button slot="reference" type="danger" size="mini" round>删除开始版本</el-button>
               </el-popover>
@@ -64,7 +64,7 @@
                 <p>确定要删除结束版本号么？</p>
                 <div style="text-align: right; margin: 0">
                   <el-button size="mini" type="text" @click="props.row.visible1 = false;" >取消</el-button>
-                  <el-button type="primary" size="mini" @click="confirmAction(props.row,2)">确定</el-button>
+                  <el-button type="primary" size="mini" @click="confirmAction(props.row,2);props.row.visible1 = false">确定</el-button>
                 </div>
                 <el-button slot="reference" type="danger" size="mini" round>删除结束版本</el-button>
               </el-popover>
