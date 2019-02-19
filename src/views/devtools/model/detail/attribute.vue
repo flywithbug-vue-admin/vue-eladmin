@@ -36,7 +36,7 @@
         </el-button>
       </div>
 
-      <eForm :modelId="dataModel.id" ref="appForm" ></eForm>
+      <eForm :modelId="dataModel.id" ref="appForm" @refreshData="refreshData" ></eForm>
     </div>
 </template>
 
@@ -62,13 +62,13 @@
 		    return "否"
       },
       formatModelType(value) {
-		    if (value.model_name){
-
-        }
         return value.type
       },
       addAction(){
            this.$refs.appForm.dialog = true
+      },
+      refreshData() {
+        this.$emit('refreshData')
       },
       rowClicked(row,event){
         if (event.target.nodeName != "BUTTON") {

@@ -12,7 +12,7 @@
     </div>
     <e-info :dataModel="dataModel" @refreshData="refreshData" ></e-info>
     <e-app :dataModel="dataModel"></e-app>
-    <e-attribute :dataModel="dataModel"></e-attribute>
+    <e-attribute :dataModel="dataModel" @refreshData="refreshData"></e-attribute>
   </div>
 </template>
 

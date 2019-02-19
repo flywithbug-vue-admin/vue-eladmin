@@ -42,9 +42,9 @@
       <el-form-item label="必须" prop="comments">
         <el-select v-model="form.required"
                    placeholder="选择是否必须"
-                   style="width: 100%">id
+                   style="width: 100%">
           <el-option v-for="item in options1"
-                     :key="item.id"
+                     :key="item.name"
                      :label="item.name"
                      :value="item.id"/>
         </el-select>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-  import { queryModels } from '@/api/model'
+  import { queryModels,attributes } from '@/api/model'
 
   export default {
 		name: 'attributeForm',
@@ -78,7 +78,7 @@
         rules: {
           name: [
             { required: true, message: "请输入属性名称", trigger: 'blur' },
-            { pattern: /^[A-Z][A-Za-z]+$/, message: '首字母大写的英文字母名字', trigger: 'blur' }
+            { pattern: /^[A-Z][A-Za-z0-9_]+$/, message: '首字母大写的英文字母名字', trigger: 'blur' }
           ],
           properType: [
             { required: true, message: "必须选择属性类型", trigger: 'blur' }
@@ -88,7 +88,7 @@
         mQuery:false,
         dialog: false,
         loading: false,
-        form:{type:'String', name:'',model_name:'',model_id:null,comments:'',required:false,default:''},
+        form:{type:'String', name:'',model_name:'',model_id:null,comments:'',required:true,default:''},
         currentAppId:0,
         options:[
           {name: "String"},
@@ -107,8 +107,20 @@
     },
     methods: {
       doSubmit() {
-        console.log("doSubmit",this.form)
+        const data = {
+          id:this.modelId,
+          attributes:[this.form]
+        }
+        attributes(data).then(() => {
+          this.$notify({
+            title: '添加成功',
+            type: 'success',
+            duration: 1500
+          })
+          this.dialog = false
+          this.$emit('refreshData')
 
+        })
       },
       selectorChanged(value) {
         if (value === 'Object' || value === 'Array'){

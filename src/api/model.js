@@ -23,6 +23,22 @@ export function edit(param) {
   })
 }
 
+//模型属性删改
+/*
+* {"attributes":[],"drop_attributes":[]}
+* */
+export function attributes(data) {
+  return client({
+    url: '/tools/model/attribute',
+    method: 'put',
+    data:data
+  })
+}
+
+
+
+
+//模型 app关联
 export function model_apps(query) {
   return client({
     url: '/tools/model_apps',
