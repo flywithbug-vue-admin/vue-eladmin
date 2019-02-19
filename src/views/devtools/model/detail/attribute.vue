@@ -27,13 +27,24 @@
         <el-table-column prop="comments" label="属性说明"/>
       </el-table>
 
+      <div align="center" style="margin-top: 10px">
+        <el-button  type="primary"
+                    @click="addAction"
+                    plain size="mini"
+                    icon="el-icon-plus" round>
+          {{ "模型属性" }}
+        </el-button>
+      </div>
 
+      <eForm :modelId="dataModel.id" ref="appForm" ></eForm>
     </div>
 </template>
 
 <script>
-	export default {
+  import eForm   from './attributeForm'
+  export default {
 		name: 'attribuite',
+    components: { eForm },
     props: {
       dataModel: {
         type:Object,
@@ -55,7 +66,9 @@
 
         }
         return value.type
-
+      },
+      addAction(){
+           this.$refs.appForm.dialog = true
       },
       rowClicked(row,event){
         if (event.target.nodeName != "BUTTON") {

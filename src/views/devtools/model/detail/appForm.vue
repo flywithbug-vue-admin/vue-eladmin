@@ -146,8 +146,9 @@
         const query = {
           app_id:this.currentAppId,
           version:value,
-          size:5
+          size:5,
         }
+
         list(query).then(res => {
           this.options = res.list
         })

@@ -15,8 +15,6 @@ export function queryModels(query) {
   })
 }
 
-
-
 export function edit(param) {
   return client({
     url: '/tools/model',

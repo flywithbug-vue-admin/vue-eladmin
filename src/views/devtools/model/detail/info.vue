@@ -14,7 +14,7 @@
           <div>
             <el-form  :model="dataModel" label-width="80px">
               <el-form-item label="父类">
-                <el-select v-model="parentId"
+                <el-select v-model="parent_id"
                            :remote-method="queryManager"
                            :loading="loading"
                            @change="formEdited = true"
@@ -107,7 +107,7 @@
     },
     data() {
 		  return {
-		    parentId:'',
+        parent_id:'',
         loading:false,
         formEdited:false,
         options: [],
@@ -131,8 +131,8 @@
 		      id:this.dataModel.id,
           desc:this.dataModel.desc
         }
-        if (this.parentId){
-          param.parentId = this.parentId
+        if (this.parent_id){
+          param.parent_id = this.parent_id
         }
         edit(param).then(() => {
           this.formEdited = false
@@ -141,6 +141,9 @@
             type: 'success',
             duration: 1500
           })
+          this.$emit('refreshData')
+          this.parent_id = ''
+          this.options = []
         })
       },
       queryManager(name) {
