@@ -1,6 +1,6 @@
 <template>
   <el-dialog loading="loading" :append-to-body="true" :visible.sync="dialog" title="添加属性" width="400px">
-  <e-expand :modelId="modelId" :is-add="true" @refreshData="refreshData"/>
+  <e-expand :modelId="modelId" :is-add="true" @refreshData="refreshData" @closeExpand="closeExpand"/>
   </el-dialog>
 </template>
 
@@ -26,6 +26,9 @@
         this.dialog = false
         this.$emit('refreshData')
       },
+      closeExpand(){
+        this.dialog = false
+      }
     }
 	}
 </script>

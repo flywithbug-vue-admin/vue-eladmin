@@ -132,7 +132,6 @@
         }
       },
       cancelAction() {
-        // console.log("cancelAction")
         this.$emit('closeExpand')
       },
       doSubmit() {

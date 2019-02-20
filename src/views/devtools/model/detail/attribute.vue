@@ -11,6 +11,7 @@
           <template slot-scope="props" class="expand">
             <el-row>
               <el-col :span="12">
+
                 <e-expand v-show="showFormat" :attribute="props.row" :modelId="dataModel.id"  @refreshData="refreshData" @closeExpand="closeExpand" style="width: 60%"/>
                 <el-button v-show="!showFormat" type="primary" size="mini" @click="showFormat=true">编辑</el-button>
               </el-col>
@@ -42,6 +43,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="comments" label="属性说明"/>
+        <!--<el-table-column prop="name" label="修改时间"/>-->
 
       </el-table>
 
@@ -94,7 +96,11 @@
         return value.type
       },
       closeExpand(){
-		    this.showFormat = false
+		    if (this.isAdd){
+          this.showFormat = false
+        } else {
+		      this.$emit('')
+        }
       },
       addAction(){
            this.$refs.appForm.dialog = true
