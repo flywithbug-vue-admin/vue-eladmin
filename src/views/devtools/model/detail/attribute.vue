@@ -6,11 +6,16 @@
                 ref="refTable"
                 border style="width: 100%;"
                 @row-click="rowClicked">
-        <el-table-column type="expand" >
-          <template slot-scope="props">
-            <div style="margin-right: -50px;height: 40px;display: flex">
-              expand
-            </div>
+        <el-table-column type="expand">
+          <template slot-scope="props" class="expand">
+            <el-row>
+              <el-col :span="12">
+                <e-expand :attribute="props.row" :modelId="dataModel.id"  @refreshData="refreshData" style="width: 60%"/>
+              </el-col>
+              <el-col :span="12">
+                <el-button align="right">删除</el-button>
+              </el-col>
+            </el-row>
           </template>
         </el-table-column>
         <el-table-column prop="name" label="属性名称"/>
@@ -26,22 +31,21 @@
         </el-table-column>
         <el-table-column prop="comments" label="属性说明"/>
 
-        <el-table-column  label="操作" width="120px">
-          <template slot-scope="props">
-            <el-popover
-              placement="top"
-              width="160"
-              v-model="props.row.visible">
-              <p>确定要删除所属应用么？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button size="mini" type="text" @click="props.row.visible = false;">取消</el-button>
-                <el-button type="primary" size="mini" @click="confirmAction(props.row);props.row.visible = false">确定</el-button>
-              </div>
-              <el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" round>删除</el-button>
-            </el-popover>
-          </template>
-        </el-table-column>
-
+        <!--<el-table-column  label="操作" width="120px">-->
+          <!--<template slot-scope="props">-->
+            <!--<el-popover-->
+              <!--placement="top"-->
+              <!--width="160"-->
+              <!--v-model="props.row.visible">-->
+              <!--<p>确定要删除所属应用么？</p>-->
+              <!--<div style="text-align: right; margin: 0">-->
+                <!--<el-button size="mini" type="text" @click="props.row.visible = false;">取消</el-button>-->
+                <!--<el-button type="primary" size="mini" @click="confirmAction(props.row);props.row.visible = false">确定</el-button>-->
+              <!--</div>-->
+              <!--<el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" round>删除</el-button>-->
+            <!--</el-popover>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
 
       </el-table>
 
@@ -59,9 +63,11 @@
 
 <script>
   import eForm   from './attributeForm'
+  import eExpand from './attributeExpand'
+
   export default {
 		name: 'attribuite',
-    components: { eForm },
+    components: { eForm ,eExpand},
     props: {
       dataModel: {
         type:Object,
@@ -89,9 +95,6 @@
         }
         return value.type
       },
-      confirmAction(){
-
-      },
       addAction(){
            this.$refs.appForm.dialog = true
       },
@@ -112,6 +115,11 @@
     margin-left: 10px;
     margin-top: -30px;
     width: auto;
+  }
+
+  .expand {
+    display: inline-block;
+    flex: 1;
   }
 
 

@@ -70,7 +70,6 @@
                 </div>
                 <el-button slot="reference" type="danger" size="mini" round>删除结束版本</el-button>
               </el-popover>
-
               <el-button v-show="props.row.option !== ''"
                          @click="modifyVersion(props.row,2)"
                          type="primary"
@@ -194,7 +193,7 @@
         const query = {
           app_id:this.currentAppId,
           version:value,
-          size:5
+          size:5,
         }
         list(query).then(res => {
           this.options = res.list
