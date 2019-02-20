@@ -30,6 +30,7 @@
                     :label="item.name"
                     :value="item.id"/>
        </el-select>
+
      </el-form-item>
 
      <el-form-item label="注释" prop="comments">
@@ -49,7 +50,7 @@
        </el-select>
      </el-form-item>
      <el-form-item align="right">
-       <el-button type="text" @click="dialog = false">取消</el-button>
+       <el-button type="text" @click="cancelAction" >取消</el-button>
        <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
      </el-form-item>
    </el-form>
@@ -130,6 +131,10 @@
           this.list = []
         }
       },
+      cancelAction() {
+        // console.log("cancelAction")
+        this.$emit('closeExpand')
+      },
       doSubmit() {
         const data = {
           id:this.modelId,
@@ -141,7 +146,6 @@
           }
           data.drop_attributes = [dropD]
         }
-
         attributes(data).then(() => {
           this.$notify({
             title: '添加成功',

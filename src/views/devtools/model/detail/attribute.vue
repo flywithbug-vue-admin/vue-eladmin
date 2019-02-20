@@ -6,14 +6,26 @@
                 ref="refTable"
                 border style="width: 100%;"
                 @row-click="rowClicked">
+
         <el-table-column type="expand">
           <template slot-scope="props" class="expand">
             <el-row>
               <el-col :span="12">
-                <e-expand :attribute="props.row" :modelId="dataModel.id"  @refreshData="refreshData" style="width: 60%"/>
+                <e-expand v-show="showFormat" :attribute="props.row" :modelId="dataModel.id"  @refreshData="refreshData" @closeExpand="closeExpand" style="width: 60%"/>
+                <el-button v-show="!showFormat" type="primary" size="mini" @click="showFormat=true">编辑</el-button>
               </el-col>
               <el-col :span="12">
-                <el-button align="right">删除</el-button>
+                <el-popover
+                  placement="top"
+                  width="160"
+                  v-model="props.row.visible">
+                  <p>确定要删除起始版本号么？</p>
+                  <div style="text-align: right; margin: 0">
+                    <el-button size="mini" type="text" @click="props.row.visible = false">取消</el-button>
+                    <el-button type="primary" size="mini" @click="confirmAction(props.row);props.row.visible = false">确定</el-button>
+                  </div>
+                  <el-button slot="reference" type="danger" size="mini" round>删除开始版本</el-button>
+                </el-popover>
               </el-col>
             </el-row>
           </template>
@@ -31,22 +43,6 @@
         </el-table-column>
         <el-table-column prop="comments" label="属性说明"/>
 
-        <!--<el-table-column  label="操作" width="120px">-->
-          <!--<template slot-scope="props">-->
-            <!--<el-popover-->
-              <!--placement="top"-->
-              <!--width="160"-->
-              <!--v-model="props.row.visible">-->
-              <!--<p>确定要删除所属应用么？</p>-->
-              <!--<div style="text-align: right; margin: 0">-->
-                <!--<el-button size="mini" type="text" @click="props.row.visible = false;">取消</el-button>-->
-                <!--<el-button type="primary" size="mini" @click="confirmAction(props.row);props.row.visible = false">确定</el-button>-->
-              <!--</div>-->
-              <!--<el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" round>删除</el-button>-->
-            <!--</el-popover>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-
       </el-table>
 
       <div align="center" style="margin-top: 10px">
@@ -57,13 +53,14 @@
           {{ "模型属性" }}
         </el-button>
       </div>
-      <eForm :modelId="dataModel.id" ref="appForm" @refreshData="refreshData" ></eForm>
+      <eForm :modelId="dataModel.id" ref="appForm" @refreshData="refreshData"  ></eForm>
     </div>
 </template>
 
 <script>
   import eForm   from './attributeForm'
   import eExpand from './attributeExpand'
+  import { attributes } from '@/api/model'
 
   export default {
 		name: 'attribuite',
@@ -76,7 +73,8 @@
     },
     data() {
 		  return {
-        loading:false
+        loading:false,
+        showFormat:false,
       }
     },
     methods: {
@@ -95,8 +93,28 @@
         }
         return value.type
       },
+      closeExpand(){
+		    this.showFormat = false
+      },
       addAction(){
            this.$refs.appForm.dialog = true
+      },
+      confirmAction(value){
+        const dropD = {
+          name:value.name
+        }
+        const data = {
+          id:this.dataModel.id,
+          drop_attributes:[dropD],
+        }
+        attributes(data).then(() => {
+          this.$notify({
+            title: '删除成功',
+            type: 'success',
+            duration: 1500
+          })
+          this.refreshData()
+        })
       },
       refreshData() {
         this.$emit('refreshData')
