@@ -8,7 +8,7 @@
                 @row-click="rowClicked">
 
         <el-table-column type="expand">
-          <template slot-scope="props" class="expand">
+          <template slot-scope="props" class="expandDiv">
             <el-row>
               <el-col :span="12">
 
@@ -141,7 +141,7 @@
     width: auto;
   }
 
-  .expand {
+  .expandDiv {
     display: inline-block;
     flex: 1;
   }

@@ -35,6 +35,13 @@
       style="width: 100%; "
       header-row-class-name="center"
       @sort-change="sortChange">
+
+      <!--<el-table-column type="expand">-->
+        <!--<template slot-scope="props" class="expandDiv">-->
+
+        <!--</template>-->
+      <!--</el-table-column>-->
+
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80px">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -721,6 +728,11 @@ export default {
       height: 1.9rem;
       background-size: 2rem 1.9rem;
     }
+  }
+
+  .expandDiv {
+    display: inline-block;
+    flex: 1;
   }
 
 </style>
