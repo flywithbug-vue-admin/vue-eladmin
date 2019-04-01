@@ -22,6 +22,8 @@ else
     info "${dif}"
 fi
 
+
+
 git add .
 git commit -m "${dif}"
 git push
